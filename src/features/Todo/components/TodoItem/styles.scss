@@ -1,0 +1,36 @@
+// .card-item {
+//     padding: 16px;
+//     margin: 0 8px;
+//     cursor: pointer;
+//     background-color: #f0f0f0;
+//     &__image img {
+//         border-radius: 10px;
+//     }
+
+//     &__title {
+//         text-align: center;
+//     }
+// }
+
+// .card-item.viewed .card-item__title {
+//     text-decoration: line-through;
+//     opacity: 0.5;
+// }
+.card-item {
+    padding: 16px;
+    margin: 0 8px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    &__image img {
+        border-radius: 10px;
+    }
+
+    &__title {
+        text-align: center;
+    }
+}
+
+.card-item.viewed .card-item__title {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
