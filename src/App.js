@@ -1,12 +1,50 @@
 // import './App.css';
+import { Link, NavLink, Route, Switch } from 'react-router-dom';
+import Header from './components/Header';
+import NotFound from './components/NotFound';
+import AlbumFeature from './features/Album';
+import HomeFeature from './features/Home';
 import TodoFeature from './features/Todo';
 
 function App() {
-  return (
-    <div className="App">
-      <TodoFeature></TodoFeature>
-    </div>
-  );
+    // useEffect(() => {
+    //     const fetchProducts = async () => {
+    //         const params = {
+    //             _limit: 10,
+    //         };
+    //         const productList = await productApi.getAll(params);
+    //         console.log(productList);
+    //     };
+
+    //     fetchProducts();
+    // }, []);
+
+    return (
+        <div className="App">
+            <Header></Header>
+            <p>
+                <Link to="/todos">Todos</Link>
+            </p>
+            <p>
+                <NavLink to="/albums" activeClassName="active-menu">
+                    Albums
+                </NavLink>
+            </p>
+            <p>
+                <NavLink to="/" activeClassName="active-menu">
+                    Home
+                </NavLink>
+            </p>
+
+            <Switch>
+                <Route path="/" component={HomeFeature} exact></Route>
+                <Route path="/todos" component={TodoFeature}></Route>
+                <Route path="/albums" component={AlbumFeature} exact></Route>
+
+                <Route component={NotFound}></Route>
+            </Switch>
+        </div>
+    );
 }
 
 export default App;

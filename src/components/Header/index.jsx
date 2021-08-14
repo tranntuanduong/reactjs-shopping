@@ -1,15 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import './styles.scss'
+import './styles.scss';
 
-Header.propTypes = {
-
-};
+Header.propTypes = {};
 
 function Header(props) {
     return (
         <div>
-
+            <h1>Header</h1>
         </div>
     );
 }
