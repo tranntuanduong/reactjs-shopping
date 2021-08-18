@@ -1,26 +1,32 @@
 import { TextField } from '@material-ui/core';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 
-InputField.propTypes = {
-    form: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired,
-
-    label: PropTypes.string,
-    disabled: PropTypes.bool,
-};
+InputField.propTypes = {};
 
 function InputField(props) {
-    const { form, name, label, disabled } = props;
+    const { control, name, errors, label, toucdFields, register } = props;
+    const hasError = errors[name]; /* && touchedFields[name]*/
     return (
         <Controller
+            control={control}
             name={name}
-            control={form.control}
-            as={TextField}
-            label={label}
-            disabled={disabled}
-        ></Controller>
+            render={({ field: { onChange, onBlur, value } }) => (
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    variant="outlined"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    selected={value}
+                    error={!!hasError}
+                    // nhac lich su
+                    // id="standard-error-helper-text"
+                    label={label}
+                    helperText={errors[name]?.message}
+                />
+            )}
+        />
     );
 }
 

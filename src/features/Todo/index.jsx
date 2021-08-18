@@ -13,7 +13,11 @@ function TodoFeature() {
         <div>
             <Switch>
                 <Route path={match.path} component={ListPage} exact></Route>
-                <Route path={`${match.path}/:todoId`} component={TodoDetailPage} exact></Route>
+                <Route
+                    path={`${match.path}/:todoId`}
+                    component={TodoDetailPage}
+                    exact
+                ></Route>
                 <Route component={NotFound}></Route>
             </Switch>
         </div>

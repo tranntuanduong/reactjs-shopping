@@ -9,7 +9,7 @@ ListPage.propTypes = {};
 function ListPage() {
     const initTodoList = [
         {
-            id: 5,
+            id: 1,
             name: 'Thương thầm',
             thumbnailUrl:
                 'https://photo-resize-zmp3.zadn.vn/w320_r1x1_jpeg/cover/d/6/9/6/d696b1b5d06a45f5f37245f3e475e701.jpg',
@@ -83,10 +83,20 @@ function ListPage() {
         });
     }
 
-    const renderedTodoList = todoList.filter((todo) => filterStatus === 'all' || filterStatus === todo.status);
+    const renderedTodoList = todoList.filter(
+        (todo) => filterStatus === 'all' || filterStatus === todo.status
+    );
 
     function handleTodoFormSubmit(values) {
         console.log('Form submit:', values);
+        const newTodo = {
+            id: todoList.length + 1,
+            name: values.name,
+            thumbnailUrl: values.thumbnailUrl,
+            status: 'new',
+        };
+        console.log(newTodo);
+        setTodoList([...todoList, newTodo]);
     }
 
     return (
@@ -96,7 +106,10 @@ function ListPage() {
             <button onClick={handleShowAllClick}>Show All</button>
             <button onClick={handleShowViewedClick}>Show viewed</button>
             <button onClick={handleShowNewClick}>Show New</button>
-            <TodoList todoList={renderedTodoList} onTodoClick={handleTodoClick}></TodoList>
+            <TodoList
+                todoList={renderedTodoList}
+                onTodoClick={handleTodoClick}
+            ></TodoList>
         </div>
     );
 }

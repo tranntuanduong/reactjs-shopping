@@ -18,7 +18,11 @@ function TodoList(props) {
     return (
         <ul className="todos">
             {todoList.map((todo) => (
-                <TodoItem key={todo.id} todoItem={todo} onTodoClick={onTodoClick}></TodoItem>
+                <TodoItem
+                    key={todo.id}
+                    todoItem={todo}
+                    onTodoClick={onTodoClick}
+                ></TodoItem>
             ))}
         </ul>
     );

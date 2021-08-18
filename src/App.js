@@ -1,5 +1,5 @@
 // import './App.css';
-import { Link, NavLink, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
 import AlbumFeature from './features/Album';
@@ -22,19 +22,6 @@ function App() {
     return (
         <div className="App">
             <Header></Header>
-            <p>
-                <Link to="/todos">Todos</Link>
-            </p>
-            <p>
-                <NavLink to="/albums" activeClassName="active-menu">
-                    Albums
-                </NavLink>
-            </p>
-            <p>
-                <NavLink to="/" activeClassName="active-menu">
-                    Home
-                </NavLink>
-            </p>
 
             <Switch>
                 <Route path="/" component={HomeFeature} exact></Route>
