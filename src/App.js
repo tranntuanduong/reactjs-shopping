@@ -1,4 +1,5 @@
 // import './App.css';
+import { useSnackbar } from 'notistack';
 import { Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
@@ -22,7 +23,6 @@ function App() {
     return (
         <div className="App">
             <Header></Header>
-
             <Switch>
                 <Route path="/" component={HomeFeature} exact></Route>
                 <Route path="/todos" component={TodoFeature}></Route>

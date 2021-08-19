@@ -16,31 +16,14 @@ import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import InputField from '../../../../components/FormControls/InputField';
 import PasswordField from '../../../../components/FormControls/PasswordField';
-import { register } from '../../userSlice';
+import { login } from '../../userSlice';
 
 const schema = yup.object().shape({
-    fullName: yup
-        .string()
-        .required('Please enter your name')
-        .test(
-            'should has at least tow words',
-            'Please enter at least tow words.',
-            (value) => {
-                return value.trim().split(' ').length >= 2;
-            }
-        ),
-    email: yup
+    identifier: yup
         .string()
         .email('Email is invalid')
         .required('Please enter your email'),
-    password: yup
-        .string()
-        .required('Password is require')
-        .min(6, 'Enter at least 6 characters'),
-    retypePassword: yup
-        .string()
-        .required('Please retype your password')
-        .oneOf([yup.ref('password')], 'Password does not match'),
+    password: yup.string().required('Password is require'),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -69,15 +52,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-Register.propTypes = {
+Login.propTypes = {
     closeDialog: PropTypes.func,
 };
 
-Register.defaultProps = {
+Login.defaultProps = {
     closeDialog: null,
 };
 
-function Register(props) {
+function Login(props) {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
@@ -91,32 +74,25 @@ function Register(props) {
     } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
-            fullName: '',
-            email: '',
+            identifier: '',
             password: '',
-            retypePassword: '',
         },
     });
 
     const handleSubmitForm = async (data, e) => {
         try {
-            data.username = data.email;
-            const action = register(data);
+            const action = login(data);
             const resultAction = await dispatch(action);
             const user = unwrapResult(resultAction);
-            console.log('newuserL', user);
+            console.log('newuser', user);
 
-            // reset form values to default
             reset();
-            // reset value of input tag
             e.target.reset();
-            enqueueSnackbar('register successfully', { variant: 'success' });
             if (closeDialog) {
                 closeDialog();
             }
         } catch (error) {
             enqueueSnackbar(error.message, { variant: 'error' });
-            console.log(error);
         }
     };
 
@@ -127,18 +103,12 @@ function Register(props) {
                 <LockOutlinedIcon />
             </Avatar>
             <Typography className={classes.title} component="h3" variant="h5">
-                Create an Account
+                Sign In
             </Typography>
             <form onSubmit={handleSubmit(handleSubmitForm)}>
                 <InputField
                     control={control}
-                    name="fullName"
-                    errors={errors}
-                    label="Full Name"
-                ></InputField>
-                <InputField
-                    control={control}
-                    name="email"
+                    name="identifier"
                     errors={errors}
                     label="Email"
                 ></InputField>
@@ -148,12 +118,7 @@ function Register(props) {
                     errors={errors}
                     label="Password"
                 ></PasswordField>
-                <PasswordField
-                    control={control}
-                    name="retypePassword"
-                    errors={errors}
-                    label="Retype Password"
-                ></PasswordField>
+
                 <Button
                     disabled={isSubmitting}
                     type="submit"
@@ -163,11 +128,11 @@ function Register(props) {
                     color="primary"
                     size="large"
                 >
-                    Create an Account
+                    Sign in
                 </Button>
             </form>
         </div>
     );
 }
 
-export default Register;
+export default Login;
