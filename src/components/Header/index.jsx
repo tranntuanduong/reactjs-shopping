@@ -93,6 +93,13 @@ export default function Header() {
                     >
                         <Button color="inherit"> Todos</Button>
                     </NavLink>
+                    <NavLink
+                        className={classes.link}
+                        to="/products"
+                        activeClassName="active-menu"
+                    >
+                        <Button color="inherit"> Products</Button>
+                    </NavLink>
 
                     <NavLink
                         className={classes.link}
