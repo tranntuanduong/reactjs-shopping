@@ -30,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: {
         fontWeight: 'bold',
     },
+
+    image: {
+        minHeight: '205px',
+    },
 }));
 
 function Product({ product }) {
@@ -40,8 +44,8 @@ function Product({ product }) {
         : THUMBNAIL_PLACEHOLDER;
 
     return (
-        <Box padding={1} className={classes.root}>
-            <Box>
+        <Box padding={2} className={classes.root}>
+            <Box className={classes.image}>
                 <img src={thumbnailUrl} alt={product.name} width="100%"></img>
             </Box>
             <Typography className={classes.fontWeight}>
