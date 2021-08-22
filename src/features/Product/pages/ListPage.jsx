@@ -2,6 +2,7 @@ import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
 import productApi from '../../../api/productApi';
+import ProductFilters from '../components/ProductFilters';
 import ProductList from '../components/ProductList';
 import ProductSkeletonList from '../components/ProductSkeletonList';
 import ProductSort from '../components/ProductSort';
@@ -32,7 +33,7 @@ function ListPage(props) {
     const [pagination, setPagination] = useState({
         page: 1,
         total: 1,
-        limit: 10,
+        limit: 12,
     });
     const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState({
@@ -47,7 +48,7 @@ function ListPage(props) {
                 const { data, pagination } = await productApi.getAll(filters);
                 setProductList(data);
                 setPagination(pagination);
-                console.log(data, pagination);
+                // console.log(data, pagination);
             } catch (error) {
                 console.log('Failed to fetch product list');
             }
@@ -64,10 +65,19 @@ function ListPage(props) {
     };
 
     const handleSortChange = (newValues) => {
+        setLoading(true);
         setFilters((prevFilters) => ({
             ...prevFilters,
             _page: 1,
             _sort: newValues,
+        }));
+    };
+
+    const handleFiltersChange = (newFilters) => {
+        setLoading(true);
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            ...newFilters,
         }));
     };
 
@@ -76,27 +86,25 @@ function ListPage(props) {
             <Container maxWidth="lg">
                 <Grid container spacing={1}>
                     <Grid item className={classes.left}>
-                        <Paper elevation={0}>LEFT</Paper>
+                        <Paper elevation={0}>
+                            <ProductFilters onChange={handleFiltersChange} filters={filters}></ProductFilters>
+                        </Paper>
                     </Grid>
                     <Grid item className={classes.right}>
-                        <ProductSort
-                            currentSort={filters._sort}
-                            onChange={handleSortChange}
-                        ></ProductSort>
                         <Paper elevation={0} className={classes.paper}>
+                            <ProductSort
+                                currentSort={filters._sort}
+                                onChange={handleSortChange}
+                            ></ProductSort>
                             {loading ? (
-                                <ProductSkeletonList
-                                    length={pagination.limit}
-                                />
+                                <ProductSkeletonList length={pagination.limit} />
                             ) : (
                                 <ProductList data={productList} />
                             )}
                             <Pagination
                                 color="primary"
                                 page={pagination.page}
-                                count={Math.ceil(
-                                    pagination.total / pagination.limit
-                                )}
+                                count={Math.ceil(pagination.total / pagination.limit)}
                                 className={classes.Pagination}
                                 onChange={handlePageChange}
                             ></Pagination>

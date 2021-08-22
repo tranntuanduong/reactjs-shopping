@@ -12,7 +12,7 @@ import { Controller } from 'react-hook-form';
 PasswordField.propTypes = {};
 
 function PasswordField(props) {
-    const { control, name, errors, label, toucdFields, register } = props;
+    const { control, name, errors, label } = props;
     const hasError = errors[name]; /* && touchedFields[name]*/
     const [showPassword, setShowPassword] = useState(false);
 

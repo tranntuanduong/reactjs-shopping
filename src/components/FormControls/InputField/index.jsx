@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 InputField.propTypes = {};
 
 function InputField(props) {
-    const { control, name, errors, label, toucdFields, register } = props;
+    const { control, name, errors, label } = props;
     const hasError = errors[name]; /* && touchedFields[name]*/
     return (
         <Controller
