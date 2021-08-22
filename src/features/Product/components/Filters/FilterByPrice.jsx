@@ -51,12 +51,12 @@ function FilterByPrice({ onChange }) {
         }));
     };
 
-    const handleReset = () => {
-        setValues({
-            salePrice_gte: 0,
-            salePrice_lte: 0,
-        });
-    };
+    // const handleReset = () => {
+    //     setValues({
+    //         salePrice_gte: 0,
+    //         salePrice_lte: 0,
+    //     });
+    // };
 
     return (
         <Box className={classes.root}>

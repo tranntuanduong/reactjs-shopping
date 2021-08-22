@@ -1,7 +1,9 @@
 import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
+import categoryApi from '../../../api/categoryApi';
 import productApi from '../../../api/productApi';
+import FilterViewer from '../components/FilterViewer';
 import ProductFilters from '../components/ProductFilters';
 import ProductList from '../components/ProductList';
 import ProductSkeletonList from '../components/ProductSkeletonList';
@@ -30,6 +32,8 @@ function ListPage(props) {
     console.log('render products');
     const classes = useStyles();
     const [productList, setProductList] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [categoiesLoading, setCategoiesLoading] = useState(true);
     const [pagination, setPagination] = useState({
         page: 1,
         total: 1,
@@ -56,6 +60,24 @@ function ListPage(props) {
         })();
     }, [filters]);
 
+    useEffect(() => {
+        (async () => {
+            try {
+                const categories = await categoryApi.getAll();
+                console.log(categories);
+                setCategories(
+                    categories.map((x) => ({
+                        id: x.id,
+                        name: x.name,
+                    }))
+                );
+                setCategoiesLoading(false);
+            } catch (error) {
+                console.log(error);
+            }
+        })();
+    }, []);
+
     const handlePageChange = (e, page) => {
         setLoading(true);
         setFilters((prevFilters) => ({
@@ -81,13 +103,23 @@ function ListPage(props) {
         }));
     };
 
+    const setNewFilters = (newFilters) => {
+        setLoading(true);
+        setFilters(newFilters);
+    };
+
     return (
         <Box>
             <Container maxWidth="lg">
                 <Grid container spacing={1}>
                     <Grid item className={classes.left}>
                         <Paper elevation={0}>
-                            <ProductFilters onChange={handleFiltersChange} filters={filters}></ProductFilters>
+                            <ProductFilters
+                                onChange={handleFiltersChange}
+                                categoiesLoading={categoiesLoading}
+                                filters={filters}
+                                categories={categories}
+                            ></ProductFilters>
                         </Paper>
                     </Grid>
                     <Grid item className={classes.right}>
@@ -96,6 +128,11 @@ function ListPage(props) {
                                 currentSort={filters._sort}
                                 onChange={handleSortChange}
                             ></ProductSort>
+                            <FilterViewer
+                                categories={categories}
+                                filters={filters}
+                                onChange={setNewFilters}
+                            />
                             {loading ? (
                                 <ProductSkeletonList length={pagination.limit} />
                             ) : (

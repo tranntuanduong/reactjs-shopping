@@ -16,11 +16,18 @@ src
 |     |__ index.jsx (entry point of feature Todo)
 |
 |__App.js
-|
-|
-|
-|
-|
-|
-|
+```
+
+## Show filters
+
+```
+FILTER_LIST
+-id: number
+-getLabel
+-isActive
+-onToggle
+-isRemovable
+-isRemove
+-onRemove
+
 ```
