@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Box, makeStyles } from '@material-ui/core';
 import { Chip } from '@material-ui/core';
@@ -31,7 +31,6 @@ const FILTER_LIST = [
             } else {
                 newFilters.isFreeShip = true;
             }
-
             return newFilters;
         },
     },
@@ -39,10 +38,9 @@ const FILTER_LIST = [
         id: 2,
         getLabel: (filters, categories) => {
             const category = categories.find((x) => {
-                return x.id === filters['category.id'];
+                return x.id === Number.parseInt(filters['category.id']);
             });
-
-            return category.name;
+            return category ? category.name : 'Loading...';
         },
         isActive: (filters) => true,
         isVisible: (filters) => Object.keys(filters).includes('category.id'),
@@ -56,10 +54,22 @@ const FILTER_LIST = [
     },
     {
         id: 3,
-        getLabel: (filters) =>
-            `${filters.salePrice_gte > 0 ? `Từ ${filters.salePrice_gte}đ đến` : 'Dưới'} 
-           
-            ${filters.salePrice_lte}đ`,
+        getLabel: (filters) => {
+            const salePriceGte = new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+            }).format(filters.salePrice_gte);
+
+            const salePriceLte = new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND',
+            }).format(filters.salePrice_lte);
+
+            if (filters.salePrice_gte > 0)
+                return `Từ ${salePriceGte} đến ${salePriceLte}`;
+            else return `Dưới ${salePriceLte}`;
+        },
+
         isActive: (filters) => true,
         isVisible: (filters) => filters.salePrice_lte,
         isRemovable: true,
@@ -78,7 +88,7 @@ const FILTER_LIST = [
         id: 4,
         getLabel: () => 'Có khuyễn mãi',
         isActive: (filters) => filters.isPromotion,
-        isVisible: (filters) => Object.keys(filters).includes('isPromotion'),
+        isVisible: (filters) => filters.isPromotion,
         isRemovable: true,
         onRemove: (filters) => {
             const newFilters = { ...filters };
@@ -97,14 +107,17 @@ FilterViewer.propTypes = {
 };
 
 function FilterViewer({ onChange, filters = {}, categories }) {
-    console.log(filters);
-
     const classes = useStyles();
+    const visibleFilters = useMemo(() => {
+        return FILTER_LIST.filter((x) => x.isVisible(filters));
+    }, [filters]);
+
     return (
         <Box component="ul" className={classes.root}>
-            {FILTER_LIST.filter((x) => x.isVisible(filters)).map((x) => (
+            {visibleFilters.map((x) => (
                 <li key={x.id}>
                     <Chip
+                        size="small"
                         label={x.getLabel(filters, categories)}
                         color={x.isActive(filters) ? 'primary' : 'default'}
                         clickable={!x.isRemovable}

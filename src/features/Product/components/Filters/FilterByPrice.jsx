@@ -38,10 +38,11 @@ function FilterByPrice({ onChange }) {
         salePrice_lte: 0,
     });
     const handleSubmit = () => {
-        console.log(values);
+        // console.log(values);
         if (onChange) {
             onChange(values);
         }
+        handleReset();
     };
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -51,12 +52,12 @@ function FilterByPrice({ onChange }) {
         }));
     };
 
-    // const handleReset = () => {
-    //     setValues({
-    //         salePrice_gte: 0,
-    //         salePrice_lte: 0,
-    //     });
-    // };
+    const handleReset = () => {
+        setValues({
+            salePrice_gte: 0,
+            salePrice_lte: 0,
+        });
+    };
 
     return (
         <Box className={classes.root}>
