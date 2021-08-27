@@ -39,7 +39,6 @@ function ListPage(props) {
     const location = useLocation();
     const queryParams = useMemo(() => {
         const params = queryString.parse(location.search);
-        console.log('params', params.isPromotion);
 
         const queryParams = {
             ...params,

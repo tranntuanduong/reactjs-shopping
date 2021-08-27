@@ -1,7 +1,9 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { STATIC_HOST, THUMBNAIL_PLACEHOLDER } from '../../../constants';
+import { formatPrice } from '../../../utils';
 
 Product.propTypes = {
     product: PropTypes.object,
@@ -14,6 +16,7 @@ Product.defaultProps = {
 const useStyles = makeStyles((theme) => ({
     root: {
         position: 'relative',
+        cursor: 'pointer',
     },
 
     salePercent: {
@@ -38,24 +41,25 @@ const useStyles = makeStyles((theme) => ({
 
 function Product({ product }) {
     const classes = useStyles();
+    const history = useHistory();
 
     const thumbnailUrl = product.thumbnail
         ? `${STATIC_HOST}${product.thumbnail?.url}`
         : THUMBNAIL_PLACEHOLDER;
 
+    const handleClick = () => {
+        // navigate to detail page: /products/:productId
+        history.push(`/products/${product.id}`);
+    };
+
     return (
-        <Box padding={2} className={classes.root}>
+        <Box padding={2} className={classes.root} onClick={handleClick}>
             <Box className={classes.image}>
                 <img src={thumbnailUrl} alt={product.name} width="100%"></img>
             </Box>
+            <Typography className={classes.fontWeight}>{product.name}</Typography>
             <Typography className={classes.fontWeight}>
-                {product.name}
-            </Typography>
-            <Typography className={classes.fontWeight}>
-                {new Intl.NumberFormat('vi-VN', {
-                    style: 'currency',
-                    currency: 'VND',
-                }).format(product.salePrice)}
+                {formatPrice(product.salePrice)}
             </Typography>
             <Box>
                 {product.promotionPercent > 0 ? (

@@ -27,11 +27,7 @@ function App() {
                 <Route path="/" component={HomeFeature} exact></Route>
                 <Route path="/todos" component={TodoFeature}></Route>
                 <Route path="/albums" component={AlbumFeature} exact></Route>
-                <Route
-                    path="/products"
-                    component={ProductFeature}
-                    exact
-                ></Route>
+                <Route path="/products" component={ProductFeature}></Route>
 
                 <Route component={NotFound}></Route>
             </Switch>

@@ -1,7 +1,6 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import categoryApi from '../../../../api/categoryApi';
+import React from 'react';
 import FilterSkeletons from './FilterSkeletons';
 
 FilterByCategory.propTypes = {
