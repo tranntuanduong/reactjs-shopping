@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles, Paper } from '@material-ui/core';
 import DOMPurify from 'dompurify';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 ProductDescription.propTypes = {
     product: PropTypes.object,

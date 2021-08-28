@@ -1,6 +1,8 @@
 import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { addToCart } from '../../Cart/cartSlice';
 import AddToCartForm from '../components/AddToCartForm';
 import ProductAdditional from '../components/ProductAdditional';
 import ProductDescription from '../components/ProductDescription';
@@ -38,13 +40,19 @@ function ProductDetail(props) {
     } = useRouteMatch();
 
     const { product, loading } = useProductDetail(productId);
+    const dispatch = useDispatch();
 
     if (loading) {
         return <ProductSekeletonDetail />;
     }
 
     const handleAddToCartForm = (formValues) => {
-        console.log('------', formValues);
+        const action = addToCart({
+            id: product.id,
+            product,
+            quantity: formValues.quantity,
+        });
+        dispatch(action);
     };
 
     return (
